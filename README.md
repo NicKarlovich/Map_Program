@@ -1,2 +1,3 @@
 # Map_Program
-A concept idea for a mapping program that will find the shortest path between two locations including the inside of buildings.  Hopefully I can use Dijstra's Algorithm to find paths within buildings along with some "Smart pathing" which includes pre-determining paths between buildings so that the program is fast and can find paths from one building to another possibly even through other buildings.
+A concept idea for a mapping program that will find the shortest path between two locations including the inside of buildings using Dijstra's algorithm.
+Still very much a work in progress and very mutable.
