@@ -2,7 +2,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.filechooser.FileSystemView;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -77,9 +80,40 @@ public class gui2 {
     static JTextField endTile;
     static JButton computePath;
     static JPanel computePathPanel;
-
+    static JButton abc;
+    static JButton fileDir;
     static JTree mainFileSystem;
+    static JLabel treeLabel;
 
+    public static void initalizeTree() {
+        //create the root node
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
+        //create the child nodes
+        DefaultMutableTreeNode campus = new DefaultMutableTreeNode("University Of Minnesota");
+        DefaultMutableTreeNode building = new DefaultMutableTreeNode("Yudof Hall");
+        DefaultMutableTreeNode floor3 = new DefaultMutableTreeNode("3rd Floor");
+        DefaultMutableTreeNode floor4 = new DefaultMutableTreeNode("4th Floor");
+
+        building.add(floor3);
+        building.add(floor4);
+        campus.add(building);
+        root.add(campus);
+        treeLabel = new JLabel("");
+
+        mainFileSystem = new JTree(root);
+        mainFileSystem.setPreferredSize(new Dimension(250,600));
+        mainFileSystem.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) mainFileSystem.getLastSelectedPathComponent();
+                treeLabel.setText(e.getPath().toString());
+            }
+        });
+        //directoryTab.add(new JScrollPane(mainFileSystem));
+
+        directoryTab.add(mainFileSystem);
+        directoryTab.add(treeLabel, BorderLayout.SOUTH);
+    }
 
     public static void initializeMainPanels(){
         mainFrame = new JFrame("Mapping");
@@ -307,7 +341,7 @@ public class gui2 {
     }
 
     public static void initializeDebugStuff() {
-        JButton abc = new JButton("DrawMapToConsole");
+        abc = new JButton("DrawMapToConsole");
         abc.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -318,7 +352,7 @@ public class gui2 {
     }
 
     public static void initializeFilepath() {
-        JButton fileDir = new JButton("Choose Filepath");
+        fileDir = new JButton("Choose Filepath");
         fileDir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -340,7 +374,9 @@ public class gui2 {
 
         initializeMainPanels();
 
-        createMappingPanels();
+        initalizeTree();
+
+        //createMappingPanels();
 
         initializeComputePath();
 
